@@ -1,1 +1,0 @@
-yobit_api
