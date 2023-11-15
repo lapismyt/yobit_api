@@ -149,8 +149,10 @@ class TradeApi(YobitApi):
 
         self.USE_CLOUDFLARE_SCRAPE = use_cloudflare_scrape
 
-    def _get_headers(self, data: dict):
-        data['nonce'] = str(int(datetime.datetime.now().timestamp()*10000))[5:]
+    def _get_headers(self, data: dict, nonce: str = None):
+        if nonce is None:
+            nonce  = str(int(datetime.datetime.now().timestamp()*10000))[5:]
+        data['nonce'] = nonce
         sign = hmac.new(
             self.secret_key.encode(),
             urlencode(data).encode(),
