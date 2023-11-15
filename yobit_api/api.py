@@ -153,7 +153,6 @@ class TradeApi(YobitApi):
         if nonce is None:
             nonce  = str(int(datetime.datetime.now().timestamp()*10000))[5:]
         data['nonce'] = nonce
-        print(f"Nonce: {nonce}")
         sign = hmac.new(
             self.secret_key.encode(),
             urlencode(data).encode(),
@@ -165,7 +164,7 @@ class TradeApi(YobitApi):
             'Key': self.key,
         }
 
-    def get_info(self):
+    def get_info(self, nonce = None):
         """
         Method returns information about user's balances and priviledges of API-key as well as server time.
         :return:
@@ -175,9 +174,9 @@ class TradeApi(YobitApi):
             "method": "getInfo",
         }
 
-        return self._make_request(method="post", data=data, headers=self._get_headers(data)).get("result")
+        return self._make_request(method="post", data=data, headers=self._get_headers(data, nonce=nonce)).get("result")
 
-    def buy(self, pair: str, price: float or str, amount: float):
+    def buy(self, pair: str, price: float or str, amount: float, nonce = None):
         """
         Method that allows creating new orders for stock exchange trading
         Requirements: priviledges of key info&trade
@@ -195,9 +194,9 @@ class TradeApi(YobitApi):
             "amount": amount,
         }
 
-        return self._make_request(method="post", data=data, headers=self._get_headers(data)).get("result")
+        return self._make_request(method="post", data=data, headers=self._get_headers(data, nonce=nonce)).get("result")
 
-    def sell(self, pair: str, price: float or str, amount: float):
+    def sell(self, pair: str, price: float or str, amount: float, nonce = None):
         """
         Method that allows creating new orders for stock exchange trading
         Requirements: priviledges of key info&trade
@@ -215,7 +214,7 @@ class TradeApi(YobitApi):
             "amount": amount,
         }
 
-        return self._make_request(method="post", data=data, headers=self._get_headers(data)).get("result")
+        return self._make_request(method="post", data=data, headers=self._get_headers(data, nonce=nonce)).get("result")
 
     def get_active_orders(self, pair: str):
         """
