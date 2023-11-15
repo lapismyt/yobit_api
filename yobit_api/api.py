@@ -153,6 +153,7 @@ class TradeApi(YobitApi):
         if nonce is None:
             nonce  = str(int(datetime.datetime.now().timestamp()*10000))[5:]
         data['nonce'] = nonce
+        print(f"Nonce: {nonce}")
         sign = hmac.new(
             self.secret_key.encode(),
             urlencode(data).encode(),
